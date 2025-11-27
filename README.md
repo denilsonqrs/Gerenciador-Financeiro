@@ -31,6 +31,7 @@ Um sistema de controle de gastos pessoais via console, desenvolvido para aplicar
 
 ## 🧩 Diagrama UML
 
+```mermaid
 classDiagram
     class Main {
         +main(args: String[]) void
