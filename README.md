@@ -47,7 +47,7 @@ Pré-requisitos: Ter o [Java JDK](https://www.oracle.com/java/technologies/downl
 1. **Clone o repositório:**
    ```bash
    git clone https://github.com/denilsonqrs/Gerenciador-Financeiro
-2. **Acesse a pasta do projetoÇ**
+2. **Acesse a pasta do projeto:**
    ```bash
    cd Gerenciador-Financeiro
 3. **Compile os arquivos:**
