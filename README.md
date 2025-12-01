@@ -93,6 +93,7 @@ classDiagram
         +adicionarTransacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime, parcelas: int, descricao: String) void
         +getNome() String
         +getTransacoes(mes: int) List~String~
+        -addTransacao(transacao:Transacao):void
         +toString() String
         +equals(o: Object) boolean
     }
@@ -102,13 +103,14 @@ classDiagram
         -valor: BigDecimal
         -parcelas: int
         -descricao: String
-        -data: LocalDate
-        -hora: LocalTime
+        -date: LocalDate
+        -time: LocalTime
         +Transacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime)
         +Transacao(String, valor: BigDecimal, data: LocalDate, hora:LocalTime, descricao: String)
         +Transacao(String, valor: BigDecimal, data: LocalDate, hora:LocalTime, parcelas: int, descricao: String)
         +Transacao(String, valor: BigDecimal, data: LocalDate, hora:LocalTime, parcelas: int)
-        +getMes():int
+        +getMonth():int
+        +getDateTime():LocalDateTime
         +getValor() BigDecimal
         +toString() String
     }
