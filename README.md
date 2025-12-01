@@ -31,6 +31,31 @@ O sistema foi projetado com uma arquitetura que separa as responsabilidades entr
 * **Visualização por Categoria:** O sistema permite listar gastos agrupados, facilitando a análise de onde o dinheiro está sendo gasto.
 
 ---
+## 🛠️ Tecnologias Utilizadas
+
+* **Java:** Linguagem principal do projeto.
+* **Java Time API:** Uso de `LocalDate` e `LocalTime` para gestão temporal precisa.
+* **BigDecimal:** Para alta precisão em cálculos financeiros (evitando erros de ponto flutuante).
+* **Conceitos de OO:** Aplicação prática de Encapsulamento, Composição, Sobrecarga e Listas.
+
+---
+
+## 🚀 Como Executar o Projeto
+
+Pré-requisitos: Ter o [Java JDK](https://www.oracle.com/java/technologies/downloads/) instalado.
+
+1. **Clone o repositório:**
+   ```bash
+   git clone [https://github.com/SEU-USUARIO/NOME-DO-REPOSITORIO.git](https://github.com/denilsonqrs/Gerenciador-Financeiro.git)
+2. **Acesse a pasta do projetoÇ**
+   ```bash
+   cd Gerenciador-Financeiro
+3. **Compile os arquivos:**
+   ```bash
+   javac *.java
+4. **Execute os arquivos:**
+   ```bash
+   java Main
 
 ## 🧩 Estrutura do Projeto (Diagrama de Classes)
 
