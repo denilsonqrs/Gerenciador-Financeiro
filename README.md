@@ -44,29 +44,48 @@ classDiagram
 
     class GerenciadorFinanceiro {
         -categorias: List~Categoria~
-        +adicionarTransacao(...) void
+        +adicionarTransacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime, nomeDaCategoria: String) void
+        +adicionarTransacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime, nomeDaCategoria: String, parcelas: int) void
+        +adicionarTransacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime, nomeDaCategoria: String, descricao: String) void
+        +adicionarTransacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime, nomeDaCategoria: String, parcelas: int, descricao: String) void
         +gerarExtrato(mes: int) List~String~
         +exibirCategorias() List~String~
         +criarCategoria(nome: String) void
+        +criarCategoria(nome: String, texto: String) void
         +removerCategoria(nomeDaCategoria: String) void
         +sair() void
     }
 
     class Categoria {
         -nome: String
+        -descricao: String
         -transacoes: List~Transacao~
-        +adicionarTransacao(...) void
+        +Categoria(nome: String)
+        +Categoria(nome: String, descricao: String)
+        +adicionarTransacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime) void
+        +adicionarTransacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime, parcelas: int) void
+        +adicionarTransacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime, descricao: String) void
+        +adicionarTransacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime, parcelas: int, descricao: String) void
+        +getNome() String
         +getTransacoes(mes: int) List~String~
+        +toString() String
+        +equals(o: Object) boolean
     }
 
     class Transacao {
         -nome: String
         -valor: BigDecimal
         -parcelas: int
+        -descricao: String
         -data: LocalDate
         -hora: LocalTime
-        +Transacao(...)
+        +Transacao(nome: String, valor: BigDecimal, data: LocalDate, hora:LocalTime)
+        +Transacao(String, valor: BigDecimal, data: LocalDate, hora:LocalTime, descricao: String)
+        +Transacao(String, valor: BigDecimal, data: LocalDate, hora:LocalTime, parcelas: int, descricao: String)
+        +Transacao(String, valor: BigDecimal, data: LocalDate, hora:LocalTime, parcelas: int)
+        +getMes():int
         +getValor() BigDecimal
+        +toString() String
     }
 
     Main --> GerenciadorFinanceiro : usa
