@@ -52,5 +52,9 @@ public class Transacao {
         return dateTime;
     }
 
+    @Override
+    public String toString() {
+        return "Nome: "+ name+"\n"+"Valor: R$"+ value+"\n"+"Data e Hora: "+date+" "+time;
+    }
 }
 
