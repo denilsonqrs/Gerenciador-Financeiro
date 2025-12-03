@@ -5,6 +5,7 @@ import GerenciadorFinanceiro.domain.Transacao.Transacao;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Categoria {
@@ -48,7 +49,18 @@ public class Categoria {
         }
         transacoes.add(left, transacao);
      }
-    public String getName(){
+     public List<Transacao> getTransacoes(int month){
+        List<Transacao> transacaoList = new ArrayList<>();
+        for(Transacao transacao : transacoes) {
+            if (transacao.getMonth() == month) {
+                transacaoList.add(transacao);
+            } else if (transacao.getMonth() > month) {
+                break;
+            }
+        }
+        return transacaoList;
+    }
+     public String getName(){
         return name;
     }
 }
