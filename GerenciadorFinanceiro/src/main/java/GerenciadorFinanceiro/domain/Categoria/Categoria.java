@@ -10,17 +10,14 @@ import java.util.List;
 
 public class Categoria {
     private String name;
-    private String description;
+    private TransactionType type;
     private List<Transacao> transacoes;
 
-    public Categoria(String name) {
+    public Categoria(String name, TransactionType type) {
         this.name = name;
+        this.type = type;
     }
 
-    public Categoria(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
 
     public void adicionarTransacao(String name, BigDecimal value, LocalTime time, LocalDate date, String description, int parcel) {
         Transacao transacao = new Transacao(name, value, time, date, description, parcel);
