@@ -22,4 +22,7 @@ public class GerenciadorFinanceiro {
         return false;
 
     }
+    public List<Categoria> getCategories(){
+        return List.copyOf(this.categorias);
+    }
 }
