@@ -20,9 +20,9 @@ public class Main {
     private static String menu(Scanner scanner) {
         System.out.println(
                 "\n---\nMENU\n" +
-                        "(A)Adicionar filme\n" +
-                        "(M)Mostrar todos\n" +
-                        "(D)Detalhar filme\n" +
+                        "(A)Add a new transaction\n" +
+                        "(M)List a Month Transactions\n" +
+                        "(D)Create a category\n" +
                         "(S)Sair\n" +
                         "\n" +
                         "Opção> ");
@@ -33,8 +33,11 @@ public class Main {
             case "A":
                 addTransaction(manager, scanner);
                 break;
-            case "M":
+            case "L":
                 //listTransaction(manager, scanner);
+                break;
+            case "C":
+                //createCategory(manager, scanner);
                 break;
             case "S":
                 quit();
@@ -61,10 +64,11 @@ public class Main {
         System.out.println("Enter the transaction time(hour:minutes): ");
         String timeText = scanner.nextLine();
         LocalTime time = LocalTime.parse(timeText);
+        String categoryName;
         categoryloop:
         while(true) {
             System.out.println("Enter the category of this transaction: ");
-            String categoryName = scanner.nextLine();
+            categoryName = scanner.nextLine();
             if (!manager.categoryExist(categoryName)) {
                 System.out.println("Category not found.");
                 while (true) {
@@ -92,6 +96,53 @@ public class Main {
             }
 
         }
+
+        String description = "";
+        boolean isRunning = true;
+        while (isRunning) {
+            System.out.println("Want add Description?(y/n): ");
+            String choice = scanner.nextLine().toUpperCase();
+            switch (choice) {
+                case "Y":
+                    System.out.println("Enter a description: ");
+                    description = scanner.nextLine();
+                    isRunning = false;
+                    break;
+                case "N":
+                    isRunning = false;
+                    break;
+                default:
+                    System.out.println("Invalid Option, enter again.");
+            }
+        }
+        int installments = 0;
+        isRunning = true;
+        while(isRunning){
+            System.out.println("Is this transaction paid in installments?(y/n): ");
+            String choice = scanner.nextLine().toUpperCase();
+            switch (choice) {
+                case "Y":
+                    System.out.println("Enter a number of installments?(y/n): ");
+                    installments = scanner.nextInt();
+                    isRunning = false;
+                    break;
+                case "N":
+                    isRunning = false;
+                    break;
+                default:
+                    System.out.println("Invalid Option, enter again.");
+            }
+        }
+        if (!description.isEmpty() && installments > 0){
+            manager.registerTransaction(name, value, date, time, categoryName, description, installments);
+        }else if(!description.isEmpty()){
+            manager.registerTransaction(name, value, date, time, categoryName, description);
+        }else if (installments > 0) {
+            manager.registerTransaction(name, value, date, time, categoryName, installments);
+        }else{
+            manager.registerTransaction(name, value, date, time, categoryName);
+        }
+
     }
     public static void addCategory(GerenciadorFinanceiro manager, Scanner scanner){}
 
