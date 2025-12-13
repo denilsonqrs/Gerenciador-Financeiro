@@ -1,5 +1,6 @@
 import GerenciadorFinanceiro.GerenciadorFinanceiro;
 import GerenciadorFinanceiro.domain.Categoria.Categoria;
+import GerenciadorFinanceiro.domain.Transacao.Transacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -7,6 +8,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
@@ -34,10 +36,10 @@ public class Main {
                 addTransaction(manager, scanner);
                 break;
             case "L":
-                //listTransaction(manager, scanner);
+                showTransactions(manager, scanner);
                 break;
             case "C":
-                //createCategory(manager, scanner);
+                createCategory(manager, scanner);
                 break;
             case "S":
                 quit();
@@ -47,11 +49,8 @@ public class Main {
         }
 
     }
-    private static void quit(){
-        System.out.println("Thanks, bye!");
-        System.exit(0);
-    }
-    private static void addTransaction(GerenciadorFinanceiro manager, Scanner scanner){
+
+    private static void addTransaction(GerenciadorFinanceiro manager, Scanner scanner) {
         System.out.println("Enter the transaction name: ");
         String name = scanner.nextLine();
         System.out.println("Enter the transaction value: ");
@@ -64,86 +63,40 @@ public class Main {
         System.out.println("Enter the transaction time(hour:minutes): ");
         String timeText = scanner.nextLine();
         LocalTime time = LocalTime.parse(timeText);
-        String categoryName;
-        categoryloop:
-        while(true) {
-            System.out.println("Enter the category of this transaction: ");
-            categoryName = scanner.nextLine();
-            if (!manager.categoryExist(categoryName)) {
-                System.out.println("Category not found.");
-                while (true) {
-                    System.out.println("C. Create a new Category.\nS. Show all categories.\nT. Try Again.\nQ. Quit.\n\nChoice: ");
-                    String choice = scanner.nextLine().toUpperCase();
-                    switch (choice) {
-                        case "C":
-                            addCategory(manager, scanner);
-                            continue categoryloop;
-                        case "S":
-                            for (Categoria category : manager.getCategories()) {
-                                System.out.println(category.getName());
-                            }
-                            break;
-                        case "T":
-                            continue categoryloop;
-                        case "Q":
-                            return;
-                        default:
-                            System.out.println("Invalid Option, Enter Again.");
-                    }
-                }
-            }else{
-                break;
-            }
-
-        }
-
-        String description = "";
-        boolean isRunning = true;
-        while (isRunning) {
-            System.out.println("Want add Description?(y/n): ");
-            String choice = scanner.nextLine().toUpperCase();
-            switch (choice) {
-                case "Y":
-                    System.out.println("Enter a description: ");
-                    description = scanner.nextLine();
-                    isRunning = false;
-                    break;
-                case "N":
-                    isRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid Option, enter again.");
-            }
-        }
-        int installments = 0;
-        isRunning = true;
-        while(isRunning){
-            System.out.println("Is this transaction paid in installments?(y/n): ");
-            String choice = scanner.nextLine().toUpperCase();
-            switch (choice) {
-                case "Y":
-                    System.out.println("Enter a number of installments?(y/n): ");
-                    installments = scanner.nextInt();
-                    isRunning = false;
-                    break;
-                case "N":
-                    isRunning = false;
-                    break;
-                default:
-                    System.out.println("Invalid Option, enter again.");
-            }
-        }
-        if (!description.isEmpty() && installments > 0){
-            manager.registerTransaction(name, value, date, time, categoryName, description, installments);
-        }else if(!description.isEmpty()){
-            manager.registerTransaction(name, value, date, time, categoryName, description);
-        }else if (installments > 0) {
-            manager.registerTransaction(name, value, date, time, categoryName, installments);
+        System.out.println("Enter the transaction category: ");
+        String categoryName = scanner.nextLine();
+        System.out.println("This transaction is intallment?(y/n): ");
+        String choice = scanner.nextLine().toLowerCase();
+        if (choice.equals("s")){
+            System.out.println("How many installments?: ");
+            int installments = Integer.parseInt(scanner.nextLine());
+            System.out.println(manager.registerTransaction(name, value, date, time, categoryName, installments));
         }else{
-            manager.registerTransaction(name, value, date, time, categoryName);
+            System.out.println(manager.registerTransaction(name, value, date, time, categoryName));
         }
+    }
+    private static void showTransactions(GerenciadorFinanceiro manager, Scanner scanner){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        System.out.println("Enter the start date you want to show(Day/Month/Year): ");
+        String startDateText = scanner.nextLine();
+        LocalDate startDate = LocalDate.parse(startDateText, formatter);
+        System.out.println("Enter the final date you want to show(Day/Month/Year): ");
+        String finalDateText = scanner.nextLine();
+        LocalDate finalDate = LocalDate.parse(finalDateText, formatter);
 
     }
-    public static void addCategory(GerenciadorFinanceiro manager, Scanner scanner){}
+
+    private static void createCategory(GerenciadorFinanceiro manager, Scanner scanner){
+        System.out.println("Enter a category name: ");
+        String categoryName = scanner.nextLine();
+        System.out.println("Enter a transaction type(INCOME/EXPENSE): ");
+        String typeName = scanner.nextLine();
+        System.out.println(manager.addCategory(categoryName, typeName));
+    }
+
+    private static void quit(){
+        System.out.println("Thanks, bye!");
+        System.exit(0);
+    }
 
 }
