@@ -19,16 +19,6 @@ public class Categoria {
     }
 
 
-    public void adicionarTransacao(String name, BigDecimal value, LocalTime time, LocalDate date, String description, int parcel) {
-        Transacao transacao = new Transacao(name, value, time, date, description, parcel);
-        addTransacao(transacao);
-    }
-
-    public void adicionarTransacao(String name, BigDecimal value, LocalTime time, LocalDate date, String description) {
-        Transacao transacao = new Transacao(name, value, time, date, description);
-        addTransacao(transacao);
-    }
-
     public void adicionarTransacao(String name, BigDecimal value, LocalTime time, LocalDate date, int parcel) {
         Transacao transacao = new Transacao(name, value, time, date, parcel);
         addTransacao(transacao);
