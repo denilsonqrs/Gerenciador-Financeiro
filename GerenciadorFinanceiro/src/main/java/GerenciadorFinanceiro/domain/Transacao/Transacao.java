@@ -50,4 +50,3 @@ public class Transacao {
         return "Nome: " + name + "\n" + "Valor: R$" + value + "\n" + "Data e Hora: " + date + " " + time;
     }
 }
-
