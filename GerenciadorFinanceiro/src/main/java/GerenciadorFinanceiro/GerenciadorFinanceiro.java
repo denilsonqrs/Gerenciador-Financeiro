@@ -35,9 +35,23 @@ public class GerenciadorFinanceiro {
     }
 
 
-    public void registerTransaction(String name, BigDecimal value, LocalDate date, LocalTime time, String categoryName, int installments){
+    public void registerTransaction(String name, BigDecimal value, LocalTime time, LocalDate date, String categoryName, int installments){
+        for(Categoria category: categorias){
+            if(category.getName().equals(categoryName)){
+                category.adicionarTransacao(name, value, time, date, installments);
+                return;
+            }
+        }
     }
+
     public void registerTransaction(String name, BigDecimal value, LocalDate date, LocalTime time, String categoryName){
+        for(Categoria category: categorias){
+            if(category.getName().equals(categoryName)){
+                category.adicionarTransacao(name, value, time, date);
+                return;
+            }
+        }
+
     }
     public String addCategory(String categoryName, String typeName){
         return "Categoria adicionada";
