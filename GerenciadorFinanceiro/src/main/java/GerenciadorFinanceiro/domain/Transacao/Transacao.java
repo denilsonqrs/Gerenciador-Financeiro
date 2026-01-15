@@ -36,6 +36,10 @@ public class Transacao {
         return date.getMonthValue();
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
     public LocalDateTime getDateTime() {
         LocalDateTime dateTime = LocalDateTime.of(date, time);
         return dateTime;
