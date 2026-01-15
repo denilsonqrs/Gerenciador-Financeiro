@@ -54,6 +54,9 @@ public class Categoria {
         }
         return transacaoList;
     }
+    public List<Transacao> getTransacoes() {
+        return this.transacoes;
+    }
 
     public String getName() {
         return name;
