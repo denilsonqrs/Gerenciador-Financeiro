@@ -34,11 +34,9 @@ public class GerenciadorFinanceiro {
 
     }
 
-    public String registerTransaction(String name, BigDecimal value, LocalDate date, LocalTime time, String categoryName, int installments){
-        return "Transacao adicionada";
+    public void registerTransaction(String name, BigDecimal value, LocalDate date, LocalTime time, String categoryName, int installments){
     }
-    public String registerTransaction(String name, BigDecimal value, LocalDate date, LocalTime time, String categoryName){
-        return "Transacao adicionada";
+    public void registerTransaction(String name, BigDecimal value, LocalDate date, LocalTime time, String categoryName){
     }
     public String addCategory(String categoryName, String typeName){
         return "Categoria adicionada";
