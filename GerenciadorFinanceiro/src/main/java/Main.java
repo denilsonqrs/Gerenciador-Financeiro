@@ -53,6 +53,7 @@ public class Main {
 
     }
 
+
     private static void addTransaction(GerenciadorFinanceiro manager, Scanner scanner) {
         System.out.println("Enter the transaction name: ");
         String name = scanner.nextLine();
