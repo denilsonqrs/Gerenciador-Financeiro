@@ -4,6 +4,7 @@ import GerenciadorFinanceiro.domain.Transacao.Transacao;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
@@ -35,12 +36,14 @@ public class Main {
             case "A":
                 addTransaction(manager, scanner);
                 break;
-            case "L":
+            case "B":
                 showTransactions(manager, scanner);
                 break;
             case "C":
                 createCategory(manager, scanner);
                 break;
+            case "D":
+                showCategories(manager, scanner);
             case "S":
                 quit();
                 break;
@@ -70,9 +73,9 @@ public class Main {
         if (choice.equals("s")){
             System.out.println("How many installments?: ");
             int installments = Integer.parseInt(scanner.nextLine());
-            System.out.println(manager.registerTransaction(name, value, date, time, categoryName, installments));
+            manager.registerTransaction(name, value, date, time, categoryName, installments);
         }else{
-            System.out.println(manager.registerTransaction(name, value, date, time, categoryName));
+            manager.registerTransaction(name, value, date, time, categoryName);
         }
     }
     private static void showTransactions(GerenciadorFinanceiro manager, Scanner scanner){
@@ -83,6 +86,14 @@ public class Main {
         System.out.println("Enter the final date you want to show(Day/Month/Year): ");
         String finalDateText = scanner.nextLine();
         LocalDate finalDate = LocalDate.parse(finalDateText, formatter);
+        for (Categoria category:manager.getCategories()){
+            for (Transacao transaction:category.getTransacoes()){
+                LocalDate transactionDate = transaction.getDate();
+                if((startDate.isAfter(transactionDate) || startDate.isEqual(transactionDate)) && (finalDate.isBefore(transactionDate) || finalDate.isEqual(transactionDate))){
+                    System.out.println(transaction.toString());
+                }
+            }
+        }
 
     }
 
@@ -94,6 +105,11 @@ public class Main {
         System.out.println(manager.addCategory(categoryName, typeName));
     }
 
+    private static void showCategories(GerenciadorFinanceiro manager, Scanner scanner){
+        for (Categoria category: manager.getCategories()){
+            System.out.println(category.toString());
+        }
+    }
     private static void quit(){
         System.out.println("Thanks, bye!");
         System.exit(0);
