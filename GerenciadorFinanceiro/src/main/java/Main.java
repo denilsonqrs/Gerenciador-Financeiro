@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
 public class Main {
@@ -26,10 +27,10 @@ public class Main {
                         "(B)List a Month Transactions\n" +
                         "(C)Create a category\n" +
                         "(D)Show all categories\n"+
-                        "(S)Sair\n" +
+                        "(Q)Sair\n" +
                         "\n" +
                         "Opção> ");
-        return scanner.nextLine().toUpperCase();
+        return scanner.nextLine().toUpperCase().trim();
     }
     private static void command(GerenciadorFinanceiro manager, String choice, Scanner scanner){
         switch(choice){
@@ -45,7 +46,7 @@ public class Main {
             case "D":
                 showCategories(manager, scanner);
                 break;
-            case "S":
+            case "Q":
                 quit();
                 break;
             default:
@@ -76,8 +77,14 @@ public class Main {
             System.out.println("Enter the transaction category: ");
             String categoryName = scanner.nextLine();
 
-            System.out.println("This transaction is intallment?(y/n): ");
-            String choice = scanner.nextLine().toLowerCase();
+            String choice;
+            do {
+                System.out.println("This transaction is intallment?(y/n): ");
+                choice = scanner.nextLine().toLowerCase().trim();
+                if (!choice.equals("s") && !choice.equals("n")){
+                    System.out.println("Invalid choice, please input 'n' or 's'");
+                }
+            }while (!choice.equals("s") && !choice.equals("n"));
 
             if (choice.equals("s")) {
                 System.out.println("How many installments?: ");
@@ -86,8 +93,11 @@ public class Main {
             } else {
                 manager.registerTransaction(name, value, date, time, categoryName);
             }
-        } catch (Exception e) {
-            System.out.println("An unexpected error occurred.");;
+
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid value! Please use numbers.");;
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date or time input! Please enter the correct format.");
         }
     }
     private static void showTransactions(GerenciadorFinanceiro manager, Scanner scanner){
@@ -113,6 +123,8 @@ public class Main {
                     }
                 }
             }
+        }catch (DateTimeParseException e) {
+            System.out.println("Invalid date input! Plese enter the correct format(ex: 11/10/2006).");
         }catch (Exception e) {
             System.out.println("An unexpected error occurred.");;
         }
