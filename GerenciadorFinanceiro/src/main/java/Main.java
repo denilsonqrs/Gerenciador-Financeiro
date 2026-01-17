@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.LocalDate;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Scanner;
 public class Main {
@@ -57,59 +56,82 @@ public class Main {
 
 
     private static void addTransaction(GerenciadorFinanceiro manager, Scanner scanner) {
-        System.out.println("Enter the transaction name: ");
-        String name = scanner.nextLine();
-        System.out.println("Enter the transaction value: ");
-        String valueText = scanner.nextLine();
-        BigDecimal value = new BigDecimal(valueText);
-        System.out.println("Enter the transaction date(day/month/year): ");
-        String dateText = scanner.nextLine();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        LocalDate date = LocalDate.parse(dateText, formatter);
-        System.out.println("Enter the transaction time(hour:minutes): ");
-        String timeText = scanner.nextLine();
-        LocalTime time = LocalTime.parse(timeText);
-        System.out.println("Enter the transaction category: ");
-        String categoryName = scanner.nextLine();
-        System.out.println("This transaction is intallment?(y/n): ");
-        String choice = scanner.nextLine().toLowerCase();
-        if (choice.equals("s")){
-            System.out.println("How many installments?: ");
-            int installments = Integer.parseInt(scanner.nextLine());
-            manager.registerTransaction(name, value, time, date, categoryName, installments);
-        }else{
-            manager.registerTransaction(name, value, date, time, categoryName);
+        try {
+            System.out.println("Enter the transaction name: ");
+            String name = scanner.nextLine();
+
+            System.out.println("Enter the transaction value: ");
+            String valueText = scanner.nextLine();
+            BigDecimal value = new BigDecimal(valueText);
+
+            System.out.println("Enter the transaction date(day/month/year): ");
+            String dateText = scanner.nextLine();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            LocalDate date = LocalDate.parse(dateText, formatter);
+
+            System.out.println("Enter the transaction time(hour:minutes): ");
+            String timeText = scanner.nextLine();
+            LocalTime time = LocalTime.parse(timeText);
+
+            System.out.println("Enter the transaction category: ");
+            String categoryName = scanner.nextLine();
+
+            System.out.println("This transaction is intallment?(y/n): ");
+            String choice = scanner.nextLine().toLowerCase();
+
+            if (choice.equals("s")) {
+                System.out.println("How many installments?: ");
+                int installments = Integer.parseInt(scanner.nextLine());
+                manager.registerTransaction(name, value, time, date, categoryName, installments);
+            } else {
+                manager.registerTransaction(name, value, date, time, categoryName);
+            }
+        } catch (Exception e) {
+            System.out.println("An unexpected error occurred.");;
         }
     }
     private static void showTransactions(GerenciadorFinanceiro manager, Scanner scanner){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        System.out.println("Enter the start date you want to show(Day/Month/Year): ");
-        String startDateText = scanner.nextLine();
-        LocalDate startDate = LocalDate.parse(startDateText, formatter);
-        System.out.println("Enter the final date you want to show(Day/Month/Year): ");
-        String finalDateText = scanner.nextLine();
-        LocalDate finalDate = LocalDate.parse(finalDateText, formatter);
-        for (Categoria category:manager.getCategories()){
-            if(!category.getTransacoes().isEmpty()) {
-                System.out.println("Category: " + category.toString());
-            }
-            for (Transacao transaction:category.getTransacoes()){
-                LocalDate transactionDate = transaction.getDate();
-                if((startDate.isBefore(transactionDate) || startDate.isEqual(transactionDate)) && (finalDate.isAfter(transactionDate) || finalDate.isEqual(transactionDate))){
-                    System.out.println(transaction.toString());
-                    System.out.println();
+        try {
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            System.out.println("Enter the start date you want to show(Day/Month/Year): ");
+            String startDateText = scanner.nextLine();
+            LocalDate startDate = LocalDate.parse(startDateText, formatter);
+
+            System.out.println("Enter the final date you want to show(Day/Month/Year): ");
+            String finalDateText = scanner.nextLine();
+            LocalDate finalDate = LocalDate.parse(finalDateText, formatter);
+
+            for (Categoria category : manager.getCategories()) {
+                if (!category.getTransacoes().isEmpty()) {
+                    System.out.println("Category: " + category.toString());
+                }
+                for (Transacao transaction : category.getTransacoes()) {
+                    LocalDate transactionDate = transaction.getDate();
+                    if ((startDate.isBefore(transactionDate) || startDate.isEqual(transactionDate)) && (finalDate.isAfter(transactionDate) || finalDate.isEqual(transactionDate))) {
+                        System.out.println(transaction.toString());
+                        System.out.println();
+                    }
                 }
             }
+        }catch (Exception e) {
+            System.out.println("An unexpected error occurred.");;
         }
 
     }
 
     private static void createCategory(GerenciadorFinanceiro manager, Scanner scanner){
-        System.out.println("Enter a category name: ");
-        String categoryName = scanner.nextLine();
-        System.out.println("Enter a transaction type(INCOME/EXPENSE): ");
-        String typeName = scanner.nextLine();
-        manager.addCategory(categoryName, typeName);
+        try {
+            System.out.println("Enter a category name: ");
+            String categoryName = scanner.nextLine();
+
+            System.out.println("Enter a transaction type(INCOME/EXPENSE): ");
+            String typeName = scanner.nextLine();
+
+            manager.addCategory(categoryName, typeName);
+
+        }catch (Exception e) {
+            System.out.println("An unexpected error occurred.");;
+        }
     }
 
     private static void showCategories(GerenciadorFinanceiro manager, Scanner scanner){

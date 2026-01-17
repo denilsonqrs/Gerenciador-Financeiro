@@ -64,6 +64,6 @@ public class Categoria {
     }
     @Override
     public String toString(){
-        return name+"("+type+")";
+        return name+" ("+type+")";
     }
 }

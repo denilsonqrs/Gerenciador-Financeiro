@@ -9,7 +9,6 @@ public class Transacao {
     private String name;
     private BigDecimal value;
     private int installments;
-    private String description;
     private LocalDate date;
     private LocalTime time;
 
