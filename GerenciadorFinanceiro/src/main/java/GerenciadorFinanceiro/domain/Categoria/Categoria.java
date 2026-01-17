@@ -13,11 +13,11 @@ public class Categoria {
     private TransactionType type;
     private List<Transacao> transacoes;
 
-    public Categoria(String name, TransactionType type) {
-        this.name = name;
-        this.type = type;
+    public Categoria(String name, String typeName) {
+        this.name = name.toUpperCase();
+        this.type = TransactionType.valueOf(typeName.toUpperCase());
+        this.transacoes = new ArrayList<>();
     }
-
 
     public void adicionarTransacao(String name, BigDecimal value, LocalTime time, LocalDate date, int parcel) {
         Transacao transacao = new Transacao(name, value, time, date, parcel);
@@ -54,6 +54,7 @@ public class Categoria {
         }
         return transacaoList;
     }
+
     public List<Transacao> getTransacoes() {
         return this.transacoes;
     }
@@ -61,5 +62,8 @@ public class Categoria {
     public String getName() {
         return name;
     }
+    @Override
+    public String toString(){
+        return name+"("+type+")";
+    }
 }
-
