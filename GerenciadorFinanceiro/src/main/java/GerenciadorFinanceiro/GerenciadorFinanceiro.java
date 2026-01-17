@@ -18,10 +18,10 @@ public class GerenciadorFinanceiro {
     }
     private void initBaseCategories() {
         if (this.categorias.isEmpty()){
-            this.categorias.add(new Categoria("Food", TransactionType.EXPENSE));
-            this.categorias.add(new Categoria("Entertainment", TransactionType.EXPENSE));
-            this.categorias.add(new Categoria("Salary", TransactionType.INCOME));
-            this.categorias.add(new Categoria("Investments", TransactionType.INCOME));
+            this.categorias.add(new Categoria("Food", "EXPENSE"));
+            this.categorias.add(new Categoria("Entertainment", "EXPENSE"));
+            this.categorias.add(new Categoria("Salary", "INCOME"));
+            this.categorias.add(new Categoria("Investments", "INCOME"));
         }
     }
     public boolean categoryExist(String categoryName){
@@ -37,7 +37,7 @@ public class GerenciadorFinanceiro {
 
     public void registerTransaction(String name, BigDecimal value, LocalTime time, LocalDate date, String categoryName, int installments){
         for(Categoria category: categorias){
-            if(category.getName().equals(categoryName)){
+            if(category.getName().equals(categoryName.toUpperCase())){
                 category.adicionarTransacao(name, value, time, date, installments);
                 return;
             }
@@ -46,15 +46,21 @@ public class GerenciadorFinanceiro {
 
     public void registerTransaction(String name, BigDecimal value, LocalDate date, LocalTime time, String categoryName){
         for(Categoria category: categorias){
-            if(category.getName().equals(categoryName)){
+            if(category.getName().equals(categoryName.toUpperCase())){
                 category.adicionarTransacao(name, value, time, date);
                 return;
             }
         }
 
     }
-    public String addCategory(String categoryName, String typeName){
-        return "Categoria adicionada";
+    public void addCategory(String categoryName, String typeName){
+        for (Categoria category:categorias){
+            if (category.getName().equals(categoryName.toUpperCase())){
+                return;
+            }
+        }
+        Categoria category = new Categoria(categoryName, typeName);
+        categorias.add(category);
     }
     public List<Categoria> getCategories(){
         return List.copyOf(this.categorias);
