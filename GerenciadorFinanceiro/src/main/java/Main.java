@@ -24,8 +24,9 @@ public class Main {
         System.out.println(
                 "\n---\nMENU\n" +
                         "(A)Add a new transaction\n" +
-                        "(M)List a Month Transactions\n" +
-                        "(D)Create a category\n" +
+                        "(B)List a Month Transactions\n" +
+                        "(C)Create a category\n" +
+                        "(D)Show all categories\n"+
                         "(S)Sair\n" +
                         "\n" +
                         "Opção> ");
@@ -44,6 +45,7 @@ public class Main {
                 break;
             case "D":
                 showCategories(manager, scanner);
+                break;
             case "S":
                 quit();
                 break;
@@ -74,7 +76,7 @@ public class Main {
         if (choice.equals("s")){
             System.out.println("How many installments?: ");
             int installments = Integer.parseInt(scanner.nextLine());
-            manager.registerTransaction(name, value, date, time, categoryName, installments);
+            manager.registerTransaction(name, value, time, date, categoryName, installments);
         }else{
             manager.registerTransaction(name, value, date, time, categoryName);
         }
@@ -88,10 +90,14 @@ public class Main {
         String finalDateText = scanner.nextLine();
         LocalDate finalDate = LocalDate.parse(finalDateText, formatter);
         for (Categoria category:manager.getCategories()){
+            if(!category.getTransacoes().isEmpty()) {
+                System.out.println("Category: " + category.toString());
+            }
             for (Transacao transaction:category.getTransacoes()){
                 LocalDate transactionDate = transaction.getDate();
-                if((startDate.isAfter(transactionDate) || startDate.isEqual(transactionDate)) && (finalDate.isBefore(transactionDate) || finalDate.isEqual(transactionDate))){
+                if((startDate.isBefore(transactionDate) || startDate.isEqual(transactionDate)) && (finalDate.isAfter(transactionDate) || finalDate.isEqual(transactionDate))){
                     System.out.println(transaction.toString());
+                    System.out.println();
                 }
             }
         }
@@ -103,7 +109,7 @@ public class Main {
         String categoryName = scanner.nextLine();
         System.out.println("Enter a transaction type(INCOME/EXPENSE): ");
         String typeName = scanner.nextLine();
-        System.out.println(manager.addCategory(categoryName, typeName));
+        manager.addCategory(categoryName, typeName);
     }
 
     private static void showCategories(GerenciadorFinanceiro manager, Scanner scanner){
