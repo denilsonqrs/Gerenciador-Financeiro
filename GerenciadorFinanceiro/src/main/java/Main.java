@@ -66,13 +66,10 @@ public class Main {
             BigDecimal value = new BigDecimal(valueText);
 
             System.out.println("Enter the transaction date(day/month/year): ");
-            String dateText = scanner.nextLine();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-            LocalDate date = LocalDate.parse(dateText, formatter);
+            String date = scanner.nextLine();
 
             System.out.println("Enter the transaction time(hour:minutes): ");
-            String timeText = scanner.nextLine();
-            LocalTime time = LocalTime.parse(timeText);
+            String time = scanner.nextLine();
 
             System.out.println("Enter the transaction category: ");
             String categoryName = scanner.nextLine();
@@ -91,7 +88,7 @@ public class Main {
                 int installments = Integer.parseInt(scanner.nextLine());
                 manager.registerTransaction(name, value, time, date, categoryName, installments);
             } else {
-                manager.registerTransaction(name, value, date, time, categoryName);
+                manager.registerTransaction(name, value, time, date, categoryName);
             }
 
         } catch (NumberFormatException e) {

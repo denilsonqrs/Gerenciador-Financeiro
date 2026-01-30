@@ -36,7 +36,9 @@ public class Transacao {
     public int getMonth() {
         return getDateTime().getMonthValue();
     }
-
+    public LocalDate getDate(){
+        return dateTime.toLocalDate();
+    }
     public LocalDateTime getDateTime() {
         return dateTime;
     }

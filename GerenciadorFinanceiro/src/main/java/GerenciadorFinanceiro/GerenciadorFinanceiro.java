@@ -55,7 +55,28 @@ public class GerenciadorFinanceiro {
         transacoes.add(left, transacao);
     }
 
-    public void registerTransaction(String name, BigDecimal value, LocalDate date, LocalTime time, String categoryName){
+    public void registerTransaction(String name, BigDecimal value, String dateStr, String timeStr, String categoryName){
+
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm");
+        LocalDate data = LocalDate.parse(dateStr, df);
+        LocalTime hora = LocalTime.parse(timeStr, tf);
+        LocalDateTime dateTime = LocalDateTime.of(data, hora);
+        if(!categorias.containsKey(categoryName)){
+            //joga a exceção la pro main de categoria nao existente
+        }
+        Transacao transacao = new Transacao(name, value, dateTime, categorias.get(categoryName));
+        int left = 0;
+        int right = transacoes.size();
+        while (left < right) {
+            int mid = (left + right) / 2;
+            if (transacao.getDateTime().isBefore(transacoes.get(mid).getDateTime())) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        transacoes.add(left, transacao);
     }
     public void addCategory(String categoryName, String typeName){
         if(categorias.containsKey(categoryName)){
