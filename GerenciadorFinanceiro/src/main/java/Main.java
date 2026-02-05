@@ -55,7 +55,6 @@ public class Main {
 
     }
 
-
     private static void addTransaction(GerenciadorFinanceiro manager, Scanner scanner) {
         try {
             System.out.println("Enter the transaction name: ");
@@ -66,35 +65,31 @@ public class Main {
             BigDecimal value = new BigDecimal(valueText);
 
             System.out.println("Enter the transaction date(day/month/year): ");
-            String date = scanner.nextLine();
+            String dateStr = scanner.nextLine();
 
             System.out.println("Enter the transaction time(hour:minutes): ");
-            String time = scanner.nextLine();
+            String timeStr = scanner.nextLine();
+
+            DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+            DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm");
+            LocalDate data = LocalDate.parse(dateStr, df);
+            LocalTime hora = LocalTime.parse(timeStr, tf);
+            LocalDateTime dateTime = LocalDateTime.of(data, hora);
 
             System.out.println("Enter the transaction category: ");
             String categoryName = scanner.nextLine();
 
-            String choice;
-            do {
-                System.out.println("This transaction is intallment?(y/n): ");
-                choice = scanner.nextLine().toLowerCase().trim();
-                if (!choice.equals("s") && !choice.equals("n")){
-                    System.out.println("Invalid choice, please input 'n' or 's'");
-                }
-            }while (!choice.equals("s") && !choice.equals("n"));
-
-            if (choice.equals("s")) {
-                System.out.println("How many installments?: ");
-                int installments = Integer.parseInt(scanner.nextLine());
-                manager.registerTransaction(name, value, time, date, categoryName, installments);
-            } else {
-                manager.registerTransaction(name, value, time, date, categoryName);
-            }
+            System.out.println("Enter a number of installments in this transaction: ");
+            String intallmentsStr = scanner.nextLine();
+            int installments = Integer.parseInt(intallmentsStr);
+            manager.registerTransaction(name, value, dateTime, categoryName, installments);
 
         } catch (NumberFormatException e) {
             System.out.println("Invalid value! Please use numbers.");;
         } catch (DateTimeParseException e) {
             System.out.println("Invalid date or time input! Please enter the correct format.");
+        } catch (IllegalArgumentException e){
+            System.out.println(e.getMessage());
         }
     }
     private static void showTransactions(GerenciadorFinanceiro manager, Scanner scanner){
@@ -108,22 +103,19 @@ public class Main {
             String finalDateText = scanner.nextLine();
             LocalDate finalDate = LocalDate.parse(finalDateText, formatter);
 
-            for (Categoria category : manager.getCategories()) {
-                if (!category.getTransacoes().isEmpty()) {
-                    System.out.println("Category: " + category.toString());
-                }
-                for (Transacao transaction : category.getTransacoes()) {
-                    LocalDate transactionDate = transaction.getDate();
-                    if ((startDate.isBefore(transactionDate) || startDate.isEqual(transactionDate)) && (finalDate.isAfter(transactionDate) || finalDate.isEqual(transactionDate))) {
-                        System.out.println(transaction.toString());
-                        System.out.println();
-                    }
-                }
+            if(manager.getTransactionsBetween(startDate, finalDate).isEmpty()){
+                System.out.println("Você nao gastou nada nesse período.");
+                return;
             }
+           for(Transacao transacao: manager.getTransactionsBetween(startDate, finalDate)){
+               System.out.println(transacao.toString());
+           }
+            System.out.println("Total: "+manager.getTotalValueBetween(startDate, finalDate));
         }catch (DateTimeParseException e) {
             System.out.println("Invalid date input! Plese enter the correct format(ex: 11/10/2006).");
         }catch (Exception e) {
-            System.out.println("An unexpected error occurred.");;
+            System.out.println("An unexpected error occurred.");
+            e.printStackTrace();
         }
 
     }
@@ -138,8 +130,10 @@ public class Main {
 
             manager.addCategory(categoryName, typeName);
 
-        }catch (Exception e) {
-            System.out.println("An unexpected error occurred.");;
+        }catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+        }catch (Exception e){
+            System.out.println("An unexpected error occurred.");
         }
     }
 

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Categoria {
     private String name;
@@ -19,8 +20,6 @@ public class Categoria {
         this.type = TransactionType.valueOf(typeName.toUpperCase());
         this.transacoes = new ArrayList<>();
     }
-
-
 
     private void addTransacao(Transacao transacao) {
         int left = 0;
@@ -49,8 +48,20 @@ public class Categoria {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Categoria that = (Categoria) obj;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
     public int hashCode() {
-        return super.hashCode();
+        return Objects.hashCode(name);
     }
 
 }

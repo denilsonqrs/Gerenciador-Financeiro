@@ -31,15 +31,9 @@ public class GerenciadorFinanceiro {
         }
     }
 
-    public void registerTransaction(String name, BigDecimal value, String dateStr, String timeStr, String categoryName, int installments){
-
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm");
-        LocalDate data = LocalDate.parse(dateStr, df);
-        LocalTime hora = LocalTime.parse(timeStr, tf);
-        LocalDateTime dateTime = LocalDateTime.of(data, hora);
+    public void registerTransaction(String name, BigDecimal value, LocalDateTime dateTime, String categoryName, int installments){
         if(!categorias.containsKey(categoryName)){
-            //joga a exceção la pro main de categoria nao existente
+            throw new IllegalArgumentException("Categoria Inexistente");
         }
         Transacao transacao = new Transacao(name, value, dateTime, categorias.get(categoryName));
         int left = 0;
@@ -55,37 +49,38 @@ public class GerenciadorFinanceiro {
         transacoes.add(left, transacao);
     }
 
-    public void registerTransaction(String name, BigDecimal value, String dateStr, String timeStr, String categoryName){
-
-        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        DateTimeFormatter tf = DateTimeFormatter.ofPattern("HH:mm");
-        LocalDate data = LocalDate.parse(dateStr, df);
-        LocalTime hora = LocalTime.parse(timeStr, tf);
-        LocalDateTime dateTime = LocalDateTime.of(data, hora);
-        if(!categorias.containsKey(categoryName)){
-            //joga a exceção la pro main de categoria nao existente
-        }
-        Transacao transacao = new Transacao(name, value, dateTime, categorias.get(categoryName));
-        int left = 0;
-        int right = transacoes.size();
-        while (left < right) {
-            int mid = (left + right) / 2;
-            if (transacao.getDateTime().isBefore(transacoes.get(mid).getDateTime())) {
-                right = mid;
-            } else {
-                left = mid + 1;
-            }
-        }
-        transacoes.add(left, transacao);
-    }
     public void addCategory(String categoryName, String typeName){
         if(categorias.containsKey(categoryName)){
-            return;
+            throw new IllegalArgumentException("Categoria já existe.");
         }
         Categoria category = new Categoria(categoryName, typeName);
         categorias.put(categoryName, category);
+    }
+
+    public List<Transacao> getTransactionsBetween(LocalDate startDate, LocalDate finalDate){
+        List<Transacao> betweenTransactions = new ArrayList<>();
+        if(finalDate.isBefore(startDate)){
+            throw new IllegalArgumentException("Data Final antes da data Inicial");
+        }
+        for(Transacao transacao:transacoes){
+            if ((transacao.getDate().isAfter(startDate) || transacao.getDate().isEqual(startDate)) &&
+                    (transacao.getDate().isBefore(finalDate) || transacao.getDate().isEqual(finalDate))){
+                betweenTransactions.add(transacao);
+            }
+        }
+        return betweenTransactions;
+    }
+
+    public BigDecimal getTotalValueBetween(LocalDate startDate, LocalDate finalDate){
+        BigDecimal total = new BigDecimal(0.0);
+
+        for(Transacao transacao:getTransactionsBetween(startDate, finalDate)){
+                total = total.add(transacao.getValue());
+        }
+        return total;
     }
     public List<Categoria> getCategories(){
         return  new ArrayList<Categoria>(categorias.values());
     }
 }
+
